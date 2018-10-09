@@ -2,7 +2,7 @@ const EASE_FACTOR = 2.5;
 // global object that holds all parameters needed to run the simulation
 // or do more things
 // default parameter that aren't shared by optimizer and simulator 
-// are defined here so 
+// are defined here so they aren't undefined
 window.simulation_parameters = {
   extra_sim:0,
   dead_point:0
