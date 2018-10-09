@@ -1,0 +1,53 @@
+button {
+  width:100%;
+}
+
+fieldset {
+  border-color:#008dff;
+  border-radius:10px;
+  border-width:1px;
+  border-style:dashed;
+}
+
+table.layout {
+  width:100%;
+  table-layout: fixed;
+}
+table.layout td {
+  vertical-align:top;
+}
+
+table.data {
+    border-collapse: collapse;
+}
+
+table.data th {
+  background-color:#5fb8ec;
+}
+
+table.data td,
+table.data th {
+  padding:0.2em 1em;
+  border-width: 0 1px;
+  border-style: solid;
+  border-color: #106ec3;  
+}
+table.data tr:nth-child(even) td{
+        background-color: #88c9fd;
+}
+table.data tr:nth-child(odd) td {
+        background-color:#bae4fd;
+}
+table.data tbody:nth-child(even) td{
+        background-color: #88c9fd;
+}
+table.data tbody:nth-child(odd) td {
+        background-color: #bae4fd;
+}
+table.data tr.current td {
+    color:#0070ff;
+}
+
+table.data tr.best td {   
+    background:#f99292 !important;
+}

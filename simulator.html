@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/simulator.css">
+  </head>
+  <body>
+    <h1>Anki rep simulator</h1>
+    <label for="deck_size">Deck Size</label><br>
+    <input id="deck_size" type="number" value="10000" step="100" min="0"><br>
+    
+    <label for="extra_sim">Extra Simulation Days</label><span class="desc">extra simulation (just for the graph)</span><br>
+    <input id="extra_sim" type="number" value="0" step="10" min="0"><span id="es_fb" class="hint"></span><br>
+    
+    <label for="retention">Expected Retention</label><span class="desc">percentage of card you expect to pass each day</span><br>
+    <input id="retention" type="number" value="0.9"step="0.01"><span id="r_fb" class="hint"></span><br>
+    
+    <label for="interval_modifier">Interval Modifier</label><span id="im_desc" class="desc">assumed to be Log(retention)/Log(<input class="tiny" id="ret_at_100_im" type="number" value="0.9" step="0.01" min="0.01" max="0.99">)</span><br>
+    
+    <input type="checkbox" id="lock_chkb"><label id="locked" for="lock_chkb">&nbsp;</label><input id="interval_modifier" type="number" value="1" disabled><span id="im_fb" class="hint"></span><br> 
+    
+    <label for="new_card_per_day">New Cards a Day</label><br>
+    <input id="new_card_per_day" type="number" value="10" step="1"><br>
+    
+    <label for="failure_penalty">Failure Penalty</label><span class="desc">on failure, new card interval = previous interval * failure penalty</span><br>
+    <input id="failure_penalty" type="number" value="0.75" step="0.01"><span id="fp_fb" class="hint"></span><br>
+    
+    <input id="use_anki_fail_factor" type="checkbox" unchecked><label for="use_anki_fail_factor">20% ease factor decrease on failure</label><span class="desc">anki's default behavior</span><br>
+    
+    <label for="reps_new">Average Repetition for new cards</label><span class="desc">usually between 2 and 3 with default "1 10" settings</span><br>
+    <input id="reps_new" type="number" value="2.5" step="0.5"><br>
+    
+    <label for="reps_failed">Average Repetition for Failed cards</label><span class="desc">usually 2 reps</span><br>
+    <input id="reps_failed" type="number" value="2" step="0.5"><br>
+    
+    <label for="dead_point">Dead Point (in days)</label><span class="desc">When interval reaches this value, remove the card (0 = no dead point)</span><br>
+    <input id="dead_point" type="number" value="0" step="1"><span id="dp_fb" class="hint"></span>
+    <div id="clickables">
+      <button id="simulate">Simulate</button>
+      <span id="link">
+      
+      </span>
+    </div>
+    <div id="result">
+      <div id="output"></div>
+      <canvas id="myChart" width="400" height="100"></canvas>  
+    </div>  
+    
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+    <script type="text/javascript" src="js/anki.js"></script>
+    <script type="text/javascript" src="js/input_handling.js"></script>
+    <script type="text/javascript" src="js/simulator.js"></script>
+  </body>
+</html>

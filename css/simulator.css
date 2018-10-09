@@ -1,0 +1,47 @@
+#locked {
+  width:25px;
+  height:25px;
+  background-image:url('https://thumbs.dreamstime.com/t/lock-unlock-icons-set-great-any-use-vector-eps-54044039.jpg');
+  background-position:-10px -8px;
+  background-size: 80px 80px;
+  display:inline-block;
+  cursor:hand;
+}
+input:checked + #locked{
+  background-position:-43px -9px;
+}
+#lock_chkb {
+  display:none;
+}
+#interval_modifier {
+  width:119px;
+}
+
+#result {
+  background:#fff;
+  padding:5px;
+  border-radius:10px;
+  border:1px solid #008dff;
+  display:none; /*hidden until simulate*/
+}
+
+
+#output {
+  margin-left:5px;  
+}
+table.stats {
+  border-collapse:collapse;
+}
+table.stats th,table.stats td {
+  text-align:center;
+  border:1px solid #bbb;
+  /*border-width:0 1px;*/
+  padding:0.2em 1em;
+}
+table.stats th[rowspan="2"] {
+  border:none;
+}
+
+input.tiny {
+  width:3.5em;
+}

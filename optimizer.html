@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </had>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/optimizer.css">
+  <body>
+    <table class="layout">
+      <tr>
+        <td>
+          <fieldset>
+            <legend>Brain settings:</legend>
+            <label for="desired_deck_duration">Deck Duration</label><span class="desc">days you will spend on the deck (eg:1095 for 3 years) </span><br>
+            <input id="desired_deck_duration" value="1095" type="number" step="365"><span id="ddd_fb" class="hint"></span><br>
+
+            <label for="desired_study_time">Study Time</label><span class="desc">what you want to invest each day</span><br>
+            <input id="desired_study_time" value="60" type="number" step="5"><span id="dst_fb" class="hint"></span><br>
+
+            <label for="average_answer_time">Average answer time</label><span class="desc"> in seconds, given in anki's statistics</span><br>
+            <input id="average_answer_time" value="24.0" type="number" step="0.1"><span id="aat_fb" class="hint"></span><br>
+
+            <label for="current_retention">Current retention</label><span class="desc">assume 0.9 if you don't yet have any stats</span><br>
+            <input id="current_retention" value="0.9" type="number" step="0.01"><span id="cr_fb" class="hint"></span><br>
+          </fieldset>
+
+          <fieldset>
+            <legend>Anki settings:</legend>
+            <label for="current_im">Current Interval Modifier</label><span class="desc">what you have set in anki</span><br>
+            <input id="current_im" value="1.0" type="number" step="0.01"><span id="cim_fb" class="hint"></span><br>
+
+            <label for="failure_penalty">Failure Penalty</label><span class="desc">in deck Options > Lapses > New interval</span><br>
+            <input id="failure_penalty" value="0.75" type="number" step="0.01"><span id="fp_fb" class="hint"></span><br>
+
+            <input id="use_anki_fail_factor" type="checkbox"><label for="use_anki_fail_factor">20% ease factor decrease on failure</label><span class="desc">anki's default behavior</span><br>
+
+
+            <label for="reps_new">Average reps for new cards</label><span class="desc">usually between 2 and 3 with default "1 10" settings</span><br>
+            <input id="reps_new" value="3" type="number" step="0.1"><br>
+
+            <label for="reps_failed">Average reps for failed cards</label><span class="desc">usually 2 reps</span><br>
+            <input id="reps_failed" value="2" type="number" step="0.1"><br>
+          </fieldset>
+
+          <fieldset>
+            <legend>Simulation settings:</legend>
+            <label for="start_retention">Starting retention</label><br>
+            <input id="start_retention" value="0.9" type="number" step="0.01"><span id="sr_fb" class="hint"></span><br>
+
+            <label for="end_retention">Ending retention</label><br>
+            <input id="end_retention" value="0.7" type="number" step="0.01"><span id="er_fb" class="hint"></span><br>
+
+            <label for="steps">Steps</label><br>
+            <input id="steps" value="0.01" type="number" step="0.01"><span id="s_fb" class="hint"></span><br>
+          </fieldset>
+        </td>
+        <td>
+          <button id="run">
+            run
+          </button>
+          <pre id="log"></pre>
+          <table class="data" id="output">
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    
+    <script type="text/javascript" src="js/anki.js"></script>
+    <script type="text/javascript" src="js/input_handling.js"></script>
+    <script type="text/javascript" src="js/optimizer.js"></script>
+  </body>
+</html>
