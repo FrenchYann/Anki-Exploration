@@ -10,7 +10,7 @@
 }
 let $run = document.getElementById('run');
 $run.onclick = function() {
-	run();
+  asyncRun();
 };
 function run_button_disabled(state){
 	$run.disabled = state;
@@ -211,58 +211,53 @@ function output_row(stat){
   `;
 }
 
-function chain_link(arg, func) {
-  return function(acc) {
-    return new Promise(function(resolve) {
-        setTimeout(function(){
-          acc.push(func(arg));
-          resolve(acc);
-      },100)
-    });
+function asyncRun() {
+  let iterator = run();
+  function loop() {
+    let result = iterator.next();
+    if (!result.done) {
+      setTimeout(loop, 10);
+    }
   }
+  loop();
 }
-function run() {
-	run_button_disabled(true);
-	output_clear();
-	process_inputs();
-	// for retention from 99% to 1%
+
+function *run() {
+  run_button_disabled(true);
+  output_clear();
+  process_inputs();
+  
   let base_retention = retention_at_100_im(current_im, current_retention);
   let total_reps_per_day = Math.floor(desired_study_time*60 / average_answer_time); // makes sense to floor it
-  
-  let result = [];
-  var chain = Promise.resolve(result);
-  
-  
+  yield;
+ 
   let current_stat = new Stats(current_retention, 
-  														current_im,
+                              current_im,
                               find_new_cards_day(current_retention, current_im, total_reps_per_day));
   current_stat.increase = 0;
-  
-  for (let retention of iterate(current_retention, start_retention, end_retention, steps)) {
-	// todo -> make sure the simulation is ran with curren retention
-    // maybe we can mark current retention in here...
-		let im = Math.log(retention)/Math.log(base_retention);
-    
+  yield;
 
- 		chain = chain.then(chain_link(
-    	{retention:retention, im:im, total_reps_per_day:total_reps_per_day},
-      (p)=>{
-      	let s = null;
-      	if (p.retention === current_retention) {
-        	s = current_stat
-        } else {
-      		s = new Stats(p.retention,p.im,find_new_cards_day(p.retention, p.im, p.total_reps_per_day))
-      		s.increase = percent_increase(s.retained_new_cards,current_stat.retained_new_cards);
-        }
-        output_row(s);
-        return s;
-      }
-    ));
+  let result = [];
+  for (let retention of iterate(current_retention, start_retention, end_retention, steps)) {
+  // todo -> make sure the simulation is ran with curren retention
+    // maybe we can mark current retention in here...
+    let im = Math.log(retention)/Math.log(base_retention);
+    let stat = null;
+    if (retention === current_retention) {
+      stat = current_stat
+    } else {
+      stat = new Stats(retention,
+                    im,
+                    find_new_cards_day(retention, im, total_reps_per_day))
+      stat.increase = percent_increase(stat.retained_new_cards,current_stat.retained_new_cards);
+    }
+    result.push(stat);
+    output_row(stat);    
+    yield;
   }
   
-	// end of chain: 
-  chain.then((acc) => analyze(acc))
-       .then(()=>run_button_disabled(false));
+  analyze(result);
+  run_button_disabled(false);
 }
 function analyze(stats) {
 
