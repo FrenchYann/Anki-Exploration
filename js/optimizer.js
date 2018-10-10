@@ -81,7 +81,7 @@ function *iterate(current, start, end, step) {
   	yield current;
   }     
   let last_retention = start;
-  for (let i = 0; i <= Math.ceil(delta/step); i++){
+  for (let i = 0; i <= Math.ceil(delta/step) && last_retention !== end; i++){
   	let retention = start + i*step * dir;
     retention = fixnum(retention, DECIMAL_PLACES);
     if (current*dir > last_retention*dir && current*dir < retention*dir) {
