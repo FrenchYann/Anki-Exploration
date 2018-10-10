@@ -5,7 +5,7 @@
   }
 
   window.log = function(...msg) {
-		$log.textContent += msg.join(' ') + '\n'; 
+    $log.textContent += msg.join(' ') + '\n'; 
   }
 }
 let $run = document.getElementById('run');
@@ -13,7 +13,7 @@ $run.onclick = function() {
   asyncRun();
 };
 function run_button_disabled(state){
-	$run.disabled = state;
+  $run.disabled = state;
 }
 let $output = document.getElementById('output');
 
@@ -22,14 +22,14 @@ let $output = document.getElementById('output');
 
 const DECIMAL_PLACES = 2;
 function feedback_sec_to_per_min(receiver_id) {
-	return function(sec) {
-  	let $receiver = document.getElementById(receiver_id);
+  return function(sec) {
+    let $receiver = document.getElementById(receiver_id);
     $receiver.textContent = `${fixnum(60/sec,2)} reps/min` ;
   }
 }
 function feedback_reps_for_study_time(receiver_id, aat_id) {
-	return function(study_time){
-  	let $receiver = document.getElementById(receiver_id);
+  return function(study_time){
+    let $receiver = document.getElementById(receiver_id);
     let $aat = document.getElementById(aat_id);
     let aat = getters[inputs[aat_id].type]($aat);
     let reps = Math.floor(study_time*60/aat);
@@ -66,7 +66,7 @@ function get_reps_day(retention, interval_modifier, new_cards_day) {
   return sum/total;
 }
 function true_retention(anki_retention) {
-	return -(1-anki_retention)/Math.log(anki_retention);
+  return -(1-anki_retention)/Math.log(anki_retention);
 }
 function percent_increase(value, base) {
   return (value - base) / base;
@@ -74,24 +74,24 @@ function percent_increase(value, base) {
 
 function *iterate(current, start, end, step) {
   let diff = end - start;
-	let delta = Math.abs(diff);
+  let delta = Math.abs(diff);
   let dir = Math.sign(diff);
   let where_current = null;
-	if (current*dir < start*dir) {
-  	yield current;
+  if (current*dir < start*dir) {
+    yield current;
   }     
   let last_retention = start;
   for (let i = 0; i <= Math.ceil(delta/step) && last_retention !== end; i++){
-  	let retention = start + i*step * dir;
+    let retention = start + i*step * dir;
     retention = fixnum(retention, DECIMAL_PLACES);
     if (current*dir > last_retention*dir && current*dir < retention*dir) {
-    	yield(current);
+      yield(current);
     }
     yield fixnum(retention, DECIMAL_PLACES);
     last_retention = retention;
   }  
-	if (current*dir > end*dir) {
-  	yield current;
+  if (current*dir > end*dir) {
+    yield current;
   }   
 }
 
@@ -102,27 +102,27 @@ function retention_at_100_im(current_im, current_ret) {
 function find_new_cards_day(retention, im, expected_reps_day) {
   // do a binary search to find average reps per day
   // that surrounds total_reps_per_day
-	let low = {
-  	new_cards_day:1,
+  let low = {
+    new_cards_day:1,
     reps_day:null
   };
   let high = {
-  	new_cards_day:200, // may make sense to set that to expected_reps_day
+    new_cards_day:200, // may make sense to set that to expected_reps_day
     reps_day:null
   }
   
   do {
     let mid = Math.floor((low.new_cards_day + high.new_cards_day)/2);
-  	let reps_day = get_reps_day(retention, im, mid);
+    let reps_day = get_reps_day(retention, im, mid);
     if (reps_day > expected_reps_day) {
-    	high.new_cards_day = mid;
-    	high.reps_day = reps_day;
+      high.new_cards_day = mid;
+      high.reps_day = reps_day;
     } else if (reps_day < expected_reps_day) {
-    	low.new_cards_day = mid;
-    	low.reps_day = reps_day;
+      low.new_cards_day = mid;
+      low.reps_day = reps_day;
     } else if (reps_day === expected_reps_day) {
-    	low.new_cards_day = mid;
-    	low.reps_day = reps_day;
+      low.new_cards_day = mid;
+      low.reps_day = reps_day;
       high.new_cards_day = mid+1;
       high.reps_day = reps_day+1;// doesn't really matter
     }
@@ -132,7 +132,7 @@ function find_new_cards_day(retention, im, expected_reps_day) {
   // do a linear approximation to find the exact corresponding new cards/day
      
   return {
-  	low:low,
+    low:low,
     high:high,
     interp: low.new_cards_day + 
          (expected_reps_day - low.reps_day)/
@@ -142,9 +142,9 @@ function find_new_cards_day(retention, im, expected_reps_day) {
 }
 
 class Stats {
-	constructor(retention, im, data) {
-  	this.retention = retention;
-  	this.im = im;
+  constructor(retention, im, data) {
+    this.retention = retention;
+    this.im = im;
     this.new_cards_day = data.interp;
     this.low = data.low;
     this.high = data.high;
@@ -153,60 +153,60 @@ class Stats {
     this.increase = null;
     this.class = new Set();
     if(this.retention === window.simulation_parameters.current_retention) {
-    	this.class.add('current');
+      this.class.add('current');
     }
   }
   toString() {
-  	return [ `R: ${this.retention}`,
+    return [ `R: ${this.retention}`,
              `TR: ${fixnum(true_retention(this.retention),2)}`,
              `NC: ${fixnum(this.new_cards_day,2)}`].join('\t');
   }
 }
 
 function output_clear() {
-	$output.innerHTML = "";
+  $output.innerHTML = "";
 }
 function output_header() {
   $output.innerHTML += `
 <tr>
-	<th>Retention</th>
-	<th>IM</th>
-	<th>True Retention</th>
-	<!--<th>Low</th>
-	    <th>High</th>-->
-	<th>Optimal New Cards per Day</th>
-	<th>Retained New Cards</th>
-	<th>Increase Learning</th>
+  <th>Retention</th>
+  <th>IM</th>
+  <th>True Retention</th>
+  <!--<th>Low</th>
+      <th>High</th>-->
+  <th>Optimal New Cards per Day</th>
+  <th>Retained New Cards</th>
+  <th>Increase Learning</th>
 </tr>  
   `;
 }
 function output_row(stat){
-	let tr = true_retention(stat.retention);
+  let tr = true_retention(stat.retention);
   if (!$output.innerHTML) output_header();
   
   let increase = (stat.increase !== null) ? to_percent(stat.increase,2) : '???';
- 	let cls=[...stat.class].join(' ');
+  let cls=[...stat.class].join(' ');
   
   
-	$output.innerHTML += `
+  $output.innerHTML += `
 <tr class="${cls}">
-	<td>${to_percent(stat.retention)}</td>
-	<td>${to_percent(stat.im)}</td>
-	<td>${to_percent(stat.true_retention)}</td>
+  <td>${to_percent(stat.retention)}</td>
+  <td>${to_percent(stat.im)}</td>
+  <td>${to_percent(stat.true_retention)}</td>
   <!--
-	<td>
-  	nc: ${stat.low.new_cards_day}<br>
+  <td>
+    nc: ${stat.low.new_cards_day}<br>
     reps: ${stat.low.reps_day}<br>
     deck size: ${window.simulation_parameters.desired_deck_duration * stat.low.new_cards_day}
   </td>
-	<td>
-  	nc: ${stat.high.new_cards_day}<br>
+  <td>
+    nc: ${stat.high.new_cards_day}<br>
     reps: ${stat.high.reps_day}<br>
     deck_size: ${window.simulation_parameters.desired_deck_duration * stat.high.new_cards_day}
   </td>-->
-	<td>${fixnum(stat.new_cards_day,0)}</td>
-	<td>${fixnum(stat.retained_new_cards,2)}</td>
-	<td>${increase}</td>
+  <td>${fixnum(stat.new_cards_day,0)}</td>
+  <td>${fixnum(stat.retained_new_cards,2)}</td>
+  <td>${increase}</td>
 </tr>
   `;
 }
