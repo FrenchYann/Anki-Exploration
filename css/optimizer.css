@@ -30,7 +30,8 @@ table.data th {
   padding:0.2em 1em;
   border-width: 0 1px;
   border-style: solid;
-  border-color: #106ec3;  
+  border-color: #106ec3;
+  text-align: center;
 }
 table.data tr:nth-child(even) td{
         background-color: #88c9fd;
